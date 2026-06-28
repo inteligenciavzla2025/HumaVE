@@ -1,4 +1,4 @@
-# Flujos n8n — HumaVE
+# Flujos n8n — HumanVe
 
 ## Flujo 1 — Reporte nocturno a Google Sheets
 
@@ -7,7 +7,7 @@ Según PRD sección 2.7. Cron diario 23:00 → `resumen_centros()` (Supabase) �
 **Antes de activar, reemplazar:**
 1. `PEGAR_SERVICE_ROLE_KEY_AQUI` (2 veces, nodo "Consultar resumen_centros") → Service Role Key del proyecto (Supabase Dashboard → Settings → API → `service_role`, **no** la `anon`/`publishable`).
 2. `PEGAR_ID_DEL_GOOGLE_SHEET_AQUI` (3 veces) → ID del Google Sheet (de la URL: `docs.google.com/spreadsheets/d/`**`ESTE_ID`**`/edit`).
-3. Crear la credencial **Google Sheets - HumaVE** (OAuth2) en n8n y asignarla a los 3 nodos de Google Sheets.
+3. Crear la credencial **Google Sheets - HumanVe** (OAuth2) en n8n y asignarla a los 3 nodos de Google Sheets.
 4. Las hojas "Resumen Diario" y "Aforo Actual" deben existir ya en el Sheet, con encabezados: `Fecha | Centro | Tipo | Municipio | Aforo Actual | Capacidad | % Ocupacion | Personas Hoy | Items Bajo Stock | Movimientos del Dia`.
 
 La función SQL `resumen_centros()` está en [`supabase/migrations/001_initial.sql`](../supabase/migrations/001_initial.sql).

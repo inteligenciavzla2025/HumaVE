@@ -1,4 +1,4 @@
-# Este repo trackea SOLO el proyecto HumaVE (app, supabase, n8n-flows, docs).
+# Este repo trackea SOLO el proyecto HumanVe (app, supabase, n8n-flows, docs).
 # El resto de la carpeta (skills/, gsd/, .claude/, .agents/, etc.) es tooling
 # local de desarrollo y queda fuera de control de versiones a propósito.
 
@@ -11,10 +11,10 @@
 !/.mcp.json
 !/README.md
 
-# Dentro de docs/, solo el PRD real de HumaVE (el resto es documentación propia
+# Dentro de docs/, solo el PRD real de HumanVe (el resto es documentación propia
 # de Superpowers que vino con el clon original).
 /docs/*
-!/docs/HumaVE_PRD_SDD_v1.0.docx
+!/docs/HumanVe_PRD_SDD_v1.0.docx
 !/docs/capacitacion/
 !/docs/logo-original.png
 

@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
     const fecha = new Date(envio.creado_en).toLocaleString('es-VE')
 
     const texto = [
-      `*ACTA DE ENVIO — HumaVE*`,
+      `*ACTA DE ENVIO — HumanVe*`,
       `Codigo: ${envio.codigo}`,
       `Origen: ${envio.centro_origen?.nombre ?? '—'}`,
       `Destino: ${envio.centro_destino?.nombre ?? '—'}`,

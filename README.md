@@ -1,4 +1,4 @@
-# HumaVE
+# HumanVe
 
 Sistema Nacional de Respuesta Humanitaria — Venezuela.
 
@@ -32,4 +32,4 @@ npm run dev
 
 ## Documentación
 
-Ver [`docs/HumaVE_PRD_SDD_v1.0.docx`](docs/HumaVE_PRD_SDD_v1.0.docx) para el PRD + SDD completo.
+Ver [`docs/HumanVe_PRD_SDD_v1.0.docx`](docs/HumanVe_PRD_SDD_v1.0.docx) para el PRD + SDD completo.

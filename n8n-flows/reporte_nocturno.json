@@ -1,5 +1,5 @@
 {
-  "name": "HumaVE - Reporte Nocturno",
+  "name": "HumanVe - Reporte Nocturno",
   "nodes": [
     {
       "parameters": {
@@ -92,10 +92,10 @@
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "",
-          "name": "Google Sheets - HumaVE"
+          "name": "Google Sheets - HumanVe"
         }
       },
-      "notes": "Reemplazar PEGAR_ID_DEL_GOOGLE_SHEET_AQUI por el ID del Sheet (de la URL: docs.google.com/spreadsheets/d/<ESTE_ID>/edit). Crear la credencial 'Google Sheets - HumaVE' (OAuth2) antes de activar el flujo."
+      "notes": "Reemplazar PEGAR_ID_DEL_GOOGLE_SHEET_AQUI por el ID del Sheet (de la URL: docs.google.com/spreadsheets/d/<ESTE_ID>/edit). Crear la credencial 'Google Sheets - HumanVe' (OAuth2) antes de activar el flujo."
     },
     {
       "parameters": {
@@ -120,7 +120,7 @@
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "",
-          "name": "Google Sheets - HumaVE"
+          "name": "Google Sheets - HumanVe"
         }
       }
     },
@@ -147,7 +147,7 @@
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "",
-          "name": "Google Sheets - HumaVE"
+          "name": "Google Sheets - HumanVe"
         }
       }
     }

@@ -1,4 +1,4 @@
--- HumaVE — Esquema inicial
+-- HumanVe — Esquema inicial
 -- Basado en PRD+SDD v1.0, secciones 2.2, 2.6, 2.11
 -- Ejecutar en Supabase Dashboard > SQL Editor (o via supabase db push)
 
