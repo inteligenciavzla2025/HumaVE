@@ -2,9 +2,14 @@ import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './Login'
 import Shell from './Shell'
+import PublicBot from './PublicBot'
 
 function App() {
   const [session, setSession] = useState(undefined)
+
+  if (window.location.pathname === '/bot-publico') {
+    return <PublicBot />
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
