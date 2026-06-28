@@ -1,0 +1,26 @@
+# Este repo trackea SOLO el proyecto HumaVE (app, supabase, n8n-flows, docs).
+# El resto de la carpeta (skills/, gsd/, .claude/, .agents/, etc.) es tooling
+# local de desarrollo y queda fuera de control de versiones a propósito.
+
+/*
+!/app/
+!/supabase/
+!/n8n-flows/
+!/docs/
+!/.gitignore
+!/.mcp.json
+
+# Dentro de docs/, solo el PRD real de HumaVE (el resto es documentación propia
+# de Superpowers que vino con el clon original).
+/docs/*
+!/docs/HumaVE_PRD_SDD_v1.0.docx
+!/docs/capacitacion/
+
+# Artefactos comunes dentro de las carpetas trackeadas
+**/node_modules/
+**/dist/
+**/.vercel/
+**/.env
+**/.env.*.local
+**/.DS_Store
+!**/.env.example
