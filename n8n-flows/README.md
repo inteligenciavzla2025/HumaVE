@@ -10,6 +10,8 @@ La función SQL `resumen_centros()` ya está en [`supabase/migrations/001_initia
 
 ## Flujo 2 — Bot de stock por WhatsApp (bidireccional)
 
+**Estado: pausado.** Se implementó primero la versión simplificada — un bot de consulta de stock dentro de la propia PWA (texto libre, sin Twilio/WhatsApp), ver [`app/src/Bot.jsx`](../app/src/Bot.jsx). Consulta directo a Supabase (RLS ya filtra por centro/rol del usuario logueado). El bot de WhatsApp queda para una segunda etapa, reusando la misma lógica de parseo cuando haya cuenta de Twilio.
+
 **Decisión (no estaba en el PRD original):** el coordinador quiere un número central de WhatsApp donde se pueda:
 1. Recibir alertas automáticas de stock crítico (push, cron periódico).
 2. Escribirle al bot y preguntar el stock de un centro (pull, bajo demanda).

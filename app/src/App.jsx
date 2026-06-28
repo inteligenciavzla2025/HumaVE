@@ -1,12 +1,32 @@
+import { useEffect, useState } from 'react'
+import { supabase } from './lib/supabase'
+import Login from './Login'
+import Bot from './Bot'
+
 function App() {
-  return (
-    <div className="min-h-svh flex items-center justify-center bg-slate-900 text-white">
-      <div className="text-center px-6">
-        <h1 className="text-3xl font-semibold mb-2">HumaVE</h1>
-        <p className="text-slate-400">Sistema Nacional de Respuesta Humanitaria — Venezuela</p>
+  const [session, setSession] = useState(undefined)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    })
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  if (session === undefined) {
+    return (
+      <div className="min-h-svh flex items-center justify-center bg-slate-900 text-white">
+        <p className="text-slate-400 text-sm">Cargando…</p>
       </div>
-    </div>
-  )
+    )
+  }
+
+  if (!session) {
+    return <Login />
+  }
+
+  return <Bot onLogout={() => supabase.auth.signOut()} />
 }
 
 export default App
