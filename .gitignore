@@ -9,6 +9,7 @@
 !/docs/
 !/.gitignore
 !/.mcp.json
+!/README.md
 
 # Dentro de docs/, solo el PRD real de HumaVE (el resto es documentación propia
 # de Superpowers que vino con el clon original).
