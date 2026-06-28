@@ -1,0 +1,178 @@
+{
+  "name": "HumaVE - Reporte Nocturno",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 23 * * *"
+            }
+          ]
+        }
+      },
+      "id": "a1111111-1111-1111-1111-111111111111",
+      "name": "Cron 23:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ofuagrjpopajommpfnmu.supabase.co/rest/v1/rpc/resumen_centros",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Authorization", "value": "Bearer PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {}
+      },
+      "id": "a2222222-2222-2222-2222-222222222222",
+      "name": "Consultar resumen_centros",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0],
+      "notes": "Reemplazar PEGAR_SERVICE_ROLE_KEY_AQUI por la Service Role Key del proyecto (Supabase Dashboard > Settings > API). NO usar la anon/publishable key aca -- esta key necesita bypasear RLS para ver todos los centros."
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "fields": {
+          "values": [
+            { "name": "Fecha", "stringValue": "={{ $now.format('yyyy-MM-dd') }}", "type": "stringValue" },
+            { "name": "Centro", "stringValue": "={{ $json.centro }}", "type": "stringValue" },
+            { "name": "Tipo", "stringValue": "={{ $json.tipo }}", "type": "stringValue" },
+            { "name": "Municipio", "stringValue": "={{ $json.municipio }}", "type": "stringValue" },
+            { "name": "Aforo Actual", "stringValue": "={{ $json.aforo_actual }}", "type": "stringValue" },
+            { "name": "Capacidad", "stringValue": "={{ $json.capacidad_max }}", "type": "stringValue" },
+            { "name": "% Ocupacion", "stringValue": "={{ $json.porcentaje_ocupacion }}", "type": "stringValue" },
+            { "name": "Personas Hoy", "stringValue": "={{ $json.personas_registradas_hoy }}", "type": "stringValue" },
+            { "name": "Items Bajo Stock", "stringValue": "={{ $json.items_bajo_stock }}", "type": "stringValue" },
+            { "name": "Movimientos del Dia", "stringValue": "={{ $json.movimientos_hoy }}", "type": "stringValue" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a3333333-3333-3333-3333-333333333333",
+      "name": "Formatear filas",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [440, 0],
+      "notes": "resumen_centros() devuelve un array -- n8n crea automaticamente un item por cada centro. Este nodo corre una vez por item."
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "PEGAR_ID_DEL_GOOGLE_SHEET_AQUI",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Resumen Diario",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "a4444444-4444-4444-4444-444444444444",
+      "name": "Append Resumen Diario",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [660, -80],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets - HumaVE"
+        }
+      },
+      "notes": "Reemplazar PEGAR_ID_DEL_GOOGLE_SHEET_AQUI por el ID del Sheet (de la URL: docs.google.com/spreadsheets/d/<ESTE_ID>/edit). Crear la credencial 'Google Sheets - HumaVE' (OAuth2) antes de activar el flujo."
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "PEGAR_ID_DEL_GOOGLE_SHEET_AQUI",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Aforo Actual",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "a5555555-5555-5555-5555-555555555555",
+      "name": "Limpiar Aforo Actual",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [660, 80],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets - HumaVE"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "PEGAR_ID_DEL_GOOGLE_SHEET_AQUI",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Aforo Actual",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "a6666666-6666-6666-6666-666666666666",
+      "name": "Escribir Aforo Actual",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [880, 80],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets - HumaVE"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron 23:00": {
+      "main": [[{ "node": "Consultar resumen_centros", "type": "main", "index": 0 }]]
+    },
+    "Consultar resumen_centros": {
+      "main": [[{ "node": "Formatear filas", "type": "main", "index": 0 }]]
+    },
+    "Formatear filas": {
+      "main": [
+        [
+          { "node": "Append Resumen Diario", "type": "main", "index": 0 },
+          { "node": "Limpiar Aforo Actual", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Limpiar Aforo Actual": {
+      "main": [[{ "node": "Escribir Aforo Actual", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

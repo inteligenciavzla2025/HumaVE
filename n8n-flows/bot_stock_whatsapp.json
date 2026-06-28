@@ -1,0 +1,345 @@
+{
+  "name": "HumaVE - Bot de Stock por WhatsApp",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */4 * * *"
+            }
+          ]
+        }
+      },
+      "id": "b1111111-1111-1111-1111-111111111111",
+      "name": "Cron cada 4 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, -200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ofuagrjpopajommpfnmu.supabase.co/rest/v1/rpc/items_bajo_stock",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Authorization", "value": "Bearer PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{}",
+        "options": {}
+      },
+      "id": "b2222222-2222-2222-2222-222222222222",
+      "name": "Consultar items_bajo_stock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, -200],
+      "notes": "Reemplazar PEGAR_SERVICE_ROLE_KEY_AQUI por la Service Role Key del proyecto (Supabase Dashboard > Settings > API)."
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "items",
+        "options": {}
+      },
+      "id": "b3333333-3333-3333-3333-333333333333",
+      "name": "Agrupar en un item",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [440, -200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.items.length }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b4444444-4444-4444-4444-444444444444",
+      "name": "Hay items bajo minimo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [660, -200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.first().json.items;\nconst lineas = items.map(i => `- ${i.item} (${i.centro}): ${i.stock_actual}/${i.stock_minimo} ${i.unidad}`);\nreturn [{ json: { mensaje: `ALERTA STOCK BAJO - HumaVE\\n\\n${lineas.join('\\n')}` } }];"
+      },
+      "id": "b5555555-5555-5555-5555-555555555555",
+      "name": "Armar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, -260]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twilio.com/2010-04-01/Accounts/PEGAR_TWILIO_ACCOUNT_SID/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "From", "value": "whatsapp:+14155238886" },
+            { "name": "To", "value": "whatsapp:PEGAR_NUMERO_CENTRAL_AQUI" },
+            { "name": "Body", "value": "={{ $json.mensaje }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b6666666-6666-6666-6666-666666666666",
+      "name": "Enviar alerta WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, -260],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "",
+          "name": "Twilio - HumaVE"
+        }
+      },
+      "notes": "Credencial Basic Auth: usuario = Account SID de Twilio, password = Auth Token. Reemplazar PEGAR_TWILIO_ACCOUNT_SID en la URL y PEGAR_NUMERO_CENTRAL_AQUI (formato +584121234567) por el numero que recibe las alertas. 'From' es el numero de sandbox de Twilio (cambiar si ya tenes numero de produccion aprobado)."
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "humave-whatsapp-consulta",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b7777777-7777-7777-7777-777777777777",
+      "name": "Webhook mensaje entrante",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 200],
+      "webhookId": "humave-whatsapp-consulta",
+      "notes": "Configurar esta URL (la que genera n8n al activar el flujo) como webhook de mensajes entrantes en la consola de Twilio (Sandbox Settings > WHEN A MESSAGE COMES IN)."
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body ?? $input.first().json;\nconst texto = (body.Body || '').toLowerCase();\nconst de = (body.From || '').replace('whatsapp:', '');\nreturn [{ json: { texto, de } }];"
+      },
+      "id": "b8888888-8888-8888-8888-888888888888",
+      "name": "Extraer mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 200]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://ofuagrjpopajommpfnmu.supabase.co/rest/v1/centros",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "select", "value": "id,nombre" },
+            { "name": "nombre", "value": "=ilike.*{{ $json.texto.replace(/stock|de|cuanto|hay|en/g, '').trim() }}*" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Authorization", "value": "Bearer PEGAR_SERVICE_ROLE_KEY_AQUI" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b9999999-9999-9999-9999-999999999999",
+      "name": "Buscar centro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 200],
+      "notes": "Reemplazar PEGAR_SERVICE_ROLE_KEY_AQUI. Matching simple por substring -- el usuario escribe algo como 'stock de Refugio Petare' y se busca 'Refugio Petare' contra el nombre del centro."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 1,
+              "operator": { "type": "number", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1111111-1111-1111-1111-111111111111",
+      "name": "Centro unico encontrado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [660, 200]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://ofuagrjpopajommpfnmu.supabase.co/rest/v1/items_inventario",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "select", "value": "nombre,unidad,stock_actual,stock_minimo" },
+            { "name": "centro_id", "value": "=eq.{{ $json[0].id }}" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "PEGAR_SERVICE_ROLE_KEY_AQUI" },
+            { "name": "Authorization", "value": "Bearer PEGAR_SERVICE_ROLE_KEY_AQUI" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c2222222-2222-2222-2222-222222222222",
+      "name": "Consultar items del centro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 140]
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "items",
+        "options": {}
+      },
+      "id": "c3333333-3333-3333-3333-333333333333",
+      "name": "Agrupar items",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [1100, 140]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.first().json.items;\nconst lineas = items.map(i => {\n  const alerta = i.stock_actual < i.stock_minimo ? ' (BAJO MINIMO)' : '';\n  return `- ${i.nombre}: ${i.stock_actual} ${i.unidad}${alerta}`;\n});\nreturn [{ json: { mensaje: lineas.length ? lineas.join('\\n') : 'No hay items registrados en ese centro.' } }];"
+      },
+      "id": "c4444444-4444-4444-4444-444444444444",
+      "name": "Armar respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 140]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { mensaje: 'No encontre ese centro. Escribi \"stock de <nombre del centro>\".' } }];"
+      },
+      "id": "c5555555-5555-5555-5555-555555555555",
+      "name": "Mensaje no encontrado",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 280]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.twilio.com/2010-04-01/Accounts/PEGAR_TWILIO_ACCOUNT_SID/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            { "name": "From", "value": "whatsapp:+14155238886" },
+            { "name": "To", "value": "=whatsapp:{{ $('Extraer mensaje').item.json.de }}" },
+            { "name": "Body", "value": "={{ $json.mensaje }}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c6666666-6666-6666-6666-666666666666",
+      "name": "Responder por WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1540, 200],
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "",
+          "name": "Twilio - HumaVE"
+        }
+      },
+      "notes": "Reemplazar PEGAR_TWILIO_ACCOUNT_SID en la URL."
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "c7777777-7777-7777-7777-777777777777",
+      "name": "Responder webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1760, 200]
+    }
+  ],
+  "connections": {
+    "Cron cada 4 horas": {
+      "main": [[{ "node": "Consultar items_bajo_stock", "type": "main", "index": 0 }]]
+    },
+    "Consultar items_bajo_stock": {
+      "main": [[{ "node": "Agrupar en un item", "type": "main", "index": 0 }]]
+    },
+    "Agrupar en un item": {
+      "main": [[{ "node": "Hay items bajo minimo?", "type": "main", "index": 0 }]]
+    },
+    "Hay items bajo minimo?": {
+      "main": [[{ "node": "Armar mensaje", "type": "main", "index": 0 }], []]
+    },
+    "Armar mensaje": {
+      "main": [[{ "node": "Enviar alerta WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Webhook mensaje entrante": {
+      "main": [[{ "node": "Extraer mensaje", "type": "main", "index": 0 }]]
+    },
+    "Extraer mensaje": {
+      "main": [[{ "node": "Buscar centro", "type": "main", "index": 0 }]]
+    },
+    "Buscar centro": {
+      "main": [[{ "node": "Centro unico encontrado?", "type": "main", "index": 0 }]]
+    },
+    "Centro unico encontrado?": {
+      "main": [
+        [{ "node": "Consultar items del centro", "type": "main", "index": 0 }],
+        [{ "node": "Mensaje no encontrado", "type": "main", "index": 0 }]
+      ]
+    },
+    "Consultar items del centro": {
+      "main": [[{ "node": "Agrupar items", "type": "main", "index": 0 }]]
+    },
+    "Agrupar items": {
+      "main": [[{ "node": "Armar respuesta", "type": "main", "index": 0 }]]
+    },
+    "Armar respuesta": {
+      "main": [[{ "node": "Responder por WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Mensaje no encontrado": {
+      "main": [[{ "node": "Responder por WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Responder por WhatsApp": {
+      "main": [[{ "node": "Responder webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
