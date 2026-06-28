@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import Login from './Login'
-import Bot from './Bot'
+import Shell from './Shell'
 
 function App() {
   const [session, setSession] = useState(undefined)
@@ -26,7 +26,7 @@ function App() {
     return <Login />
   }
 
-  return <Bot onLogout={() => supabase.auth.signOut()} />
+  return <Shell session={session} />
 }
 
 export default App
