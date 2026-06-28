@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
-import Login from './Login'
+import Landing from './Landing'
 import Shell from './Shell'
 import PublicBot from './PublicBot'
 
 function App() {
   const [session, setSession] = useState(undefined)
-
-  if (window.location.pathname === '/bot-publico') {
-    return <PublicBot />
-  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
@@ -18,6 +14,10 @@ function App() {
     })
     return () => listener.subscription.unsubscribe()
   }, [])
+
+  if (window.location.pathname === '/bot-publico') {
+    return <PublicBot />
+  }
 
   if (session === undefined) {
     return (
@@ -28,7 +28,7 @@ function App() {
   }
 
   if (!session) {
-    return <Login />
+    return <Landing />
   }
 
   return <Shell session={session} />
