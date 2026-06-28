@@ -2,20 +2,33 @@
 
 /*
   Brand guide — HumanVe
-  Colores extraídos directamente del logo (logohumanve.png), no a ojo:
-  - brand-navy:   #14507A  -- anillo del emblema y texto "Human"
-  - brand-gold:   #E99E38  -- texto "Ve"
-  - brand-yellow: #FDCE04  -- figura izquierda
-  - brand-blue:   #0D80B9  -- figura central
-  - brand-red:    #E02C37  -- figura derecha
+
+  Dos grupos de tokens:
+  1) Paleta de la landing publica (tema claro), ajustada a mano sobre el
+     mockup en varios rounds de iteracion con el cliente.
+  2) Paleta original extraida por pixel-sampling del logo, usada en el
+     Shell logueado (tema oscuro) -- se mantiene para no romper esas
+     pantallas.
   Disponibles como utilidades de Tailwind: bg-brand-navy, text-brand-gold, etc.
 */
 @theme {
-  --color-brand-navy: #14507a;
-  --color-brand-gold: #e99e38;
-  --color-brand-yellow: #fdce04;
+  /* Landing (tema claro) */
+  --color-brand-navy: #1a3a5c;
+  --color-brand-navy-deep: #122a43;
+  --color-brand-gold: #c9910a;
+  --color-brand-gold-soft: #fbf1dd;
+  --color-brand-red: #b03020;
+  --color-brand-red-soft: #fbeae7;
+  --color-brand-green: #2e6b45;
+  --color-brand-green-soft: #e9f3ec;
+
+  /* Shell logueado (tema oscuro) -- pixel-sampled del logo original */
   --color-brand-blue: #0d80b9;
-  --color-brand-red: #e02c37;
+  --color-brand-yellow: #fdce04;
+
+  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-num: 'DM Mono', monospace;
 }
 
 :root {

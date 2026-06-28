@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { supabase } from './lib/supabase'
 
-export default function HeaderLogin() {
-  const [abierto, setAbierto] = useState(false)
+export default function HeaderLogin({ abierto, onToggle }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -20,8 +19,8 @@ export default function HeaderLogin() {
   if (!abierto) {
     return (
       <button
-        onClick={() => setAbierto(true)}
-        className="rounded-md bg-brand-navy hover:bg-brand-blue px-4 py-1.5 text-sm font-medium transition"
+        onClick={() => onToggle(true)}
+        className="rounded-md bg-brand-navy hover:bg-brand-navy-deep text-white px-4 py-1.5 text-sm font-medium transition"
       >
         Iniciar sesión
       </button>
@@ -29,14 +28,14 @@ export default function HeaderLogin() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2">
+    <form onSubmit={handleSubmit} className="relative flex items-center gap-2">
       <input
         type="email"
         required
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-36 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        className="w-36 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-navy"
       />
       <input
         type="password"
@@ -44,24 +43,25 @@ export default function HeaderLogin() {
         placeholder="Contraseña"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="w-32 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        className="w-32 rounded-md border border-gray-300 px-2 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-navy"
       />
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-brand-navy hover:bg-brand-blue disabled:opacity-50 px-3 py-1.5 text-sm font-medium transition"
+        className="rounded-md bg-brand-navy hover:bg-brand-navy-deep text-white disabled:opacity-50 px-3 py-1.5 text-sm font-medium transition"
       >
         {loading ? '…' : 'Entrar'}
       </button>
       <button
         type="button"
-        onClick={() => setAbierto(false)}
-        className="text-slate-500 hover:text-white text-sm"
+        onClick={() => onToggle(false)}
+        className="text-gray-400 hover:text-gray-700 text-sm"
+        aria-label="Cerrar"
       >
         ✕
       </button>
       {error && (
-        <span className="absolute mt-12 right-4 text-red-400 text-xs bg-slate-900 border border-red-900 rounded px-2 py-1">
+        <span className="absolute top-full mt-2 right-0 text-xs text-brand-red bg-brand-red-soft border border-red-200 rounded px-2 py-1 whitespace-nowrap">
           {error}
         </span>
       )}

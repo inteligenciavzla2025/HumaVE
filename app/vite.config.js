@@ -15,7 +15,7 @@ export default defineConfig({
         name: 'HumanVe',
         short_name: 'HumanVe',
         description: 'Sistema Nacional de Respuesta Humanitaria — Venezuela',
-        theme_color: '#14507A',
+        theme_color: '#1A3A5C',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',
