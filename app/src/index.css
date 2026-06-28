@@ -1,5 +1,23 @@
 @import "tailwindcss";
 
+/*
+  Brand guide — HumanVe
+  Colores extraídos directamente del logo (logohumanve.png), no a ojo:
+  - brand-navy:   #14507A  -- anillo del emblema y texto "Human"
+  - brand-gold:   #E99E38  -- texto "Ve"
+  - brand-yellow: #FDCE04  -- figura izquierda
+  - brand-blue:   #0D80B9  -- figura central
+  - brand-red:    #E02C37  -- figura derecha
+  Disponibles como utilidades de Tailwind: bg-brand-navy, text-brand-gold, etc.
+*/
+@theme {
+  --color-brand-navy: #14507a;
+  --color-brand-gold: #e99e38;
+  --color-brand-yellow: #fdce04;
+  --color-brand-blue: #0d80b9;
+  --color-brand-red: #e02c37;
+}
+
 :root {
   color-scheme: light;
 }

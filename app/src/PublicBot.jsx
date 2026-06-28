@@ -58,7 +58,7 @@ export default function PublicBot() {
     {
       rol: 'bot',
       texto:
-        'Hola! Soy el bot público de stock de HumaVE. Preguntame "stock de <centro>" o escribí "centros" para ver la lista. No necesitás cuenta para usarme.',
+        'Hola! Soy el bot público de stock de HumanVe. Preguntame "stock de <centro>" o escribí "centros" para ver la lista. No necesitás cuenta para usarme.',
     },
   ])
   const [input, setInput] = useState('')
@@ -92,7 +92,10 @@ export default function PublicBot() {
   return (
     <div className="min-h-svh flex flex-col bg-slate-900 text-white">
       <header className="px-4 py-3 border-b border-slate-800">
-        <h1 className="font-semibold">HumaVE — Consulta pública de stock</h1>
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="HumanVe" className="h-7 w-7 rounded" />
+          <h1 className="font-semibold">HumanVe — Consulta pública de stock</h1>
+        </div>
         <p className="text-xs text-slate-500">No requiere cuenta. Solo muestra niveles de inventario.</p>
       </header>
 
@@ -101,7 +104,7 @@ export default function PublicBot() {
           <div key={i} className={`flex ${m.rol === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
               className={`max-w-[80%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
-                m.rol === 'user' ? 'bg-blue-600' : 'bg-slate-800'
+                m.rol === 'user' ? 'bg-brand-navy' : 'bg-slate-800'
               }`}
             >
               {m.texto}
@@ -116,11 +119,11 @@ export default function PublicBot() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="stock de Refugio Petare"
-          className="flex-1 rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
         />
         <button
           type="submit"
-          className="rounded-md bg-blue-600 hover:bg-blue-500 px-4 py-2 text-sm font-medium transition"
+          className="rounded-md bg-brand-navy hover:bg-brand-blue px-4 py-2 text-sm font-medium transition"
         >
           Enviar
         </button>

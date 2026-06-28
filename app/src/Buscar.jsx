@@ -91,7 +91,7 @@ export default function Buscar() {
         <button
           type="submit"
           disabled={buscando}
-          className="w-full rounded-md bg-blue-600 hover:bg-blue-500 disabled:opacity-50 py-2 text-sm font-medium"
+          className="w-full rounded-md bg-brand-navy hover:bg-brand-blue disabled:opacity-50 py-2 text-sm font-medium"
         >
           {buscando ? 'Buscando…' : 'Buscar'}
         </button>

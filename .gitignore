@@ -16,6 +16,7 @@
 /docs/*
 !/docs/HumaVE_PRD_SDD_v1.0.docx
 !/docs/capacitacion/
+!/docs/logo-original.png
 
 # Artefactos comunes dentro de las carpetas trackeadas
 **/node_modules/

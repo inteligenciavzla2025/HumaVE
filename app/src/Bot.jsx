@@ -54,7 +54,7 @@ async function responderConsulta(texto, centros) {
   return formatStockReply(centro, items)
 }
 
-export default function Bot({ onLogout }) {
+export default function Bot() {
   const [centros, setCentros] = useState([])
   const [mensajes, setMensajes] = useState([
     { rol: 'bot', texto: 'Hola! Preguntame "stock de <centro>" o escribi "centros" para ver la lista.' },
@@ -91,20 +91,13 @@ export default function Bot({ onLogout }) {
   }
 
   return (
-    <div className="min-h-svh flex flex-col bg-slate-900 text-white">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
-        <h1 className="font-semibold">HumaVE — Bot de stock</h1>
-        <button onClick={onLogout} className="text-sm text-slate-400 hover:text-white">
-          Salir
-        </button>
-      </header>
-
+    <div className="flex flex-col h-full">
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {mensajes.map((m, i) => (
           <div key={i} className={`flex ${m.rol === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div
               className={`max-w-[80%] whitespace-pre-wrap rounded-lg px-3 py-2 text-sm ${
-                m.rol === 'user' ? 'bg-blue-600' : 'bg-slate-800'
+                m.rol === 'user' ? 'bg-brand-navy' : 'bg-slate-800'
               }`}
             >
               {m.texto}
@@ -119,11 +112,11 @@ export default function Bot({ onLogout }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="stock de Refugio Petare"
-          className="flex-1 rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
         />
         <button
           type="submit"
-          className="rounded-md bg-blue-600 hover:bg-blue-500 px-4 py-2 text-sm font-medium transition"
+          className="rounded-md bg-brand-navy hover:bg-brand-blue px-4 py-2 text-sm font-medium transition"
         >
           Enviar
         </button>

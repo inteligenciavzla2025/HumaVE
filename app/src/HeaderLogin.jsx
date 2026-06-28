@@ -21,7 +21,7 @@ export default function HeaderLogin() {
     return (
       <button
         onClick={() => setAbierto(true)}
-        className="rounded-md bg-blue-600 hover:bg-blue-500 px-4 py-1.5 text-sm font-medium transition"
+        className="rounded-md bg-brand-navy hover:bg-brand-blue px-4 py-1.5 text-sm font-medium transition"
       >
         Iniciar sesión
       </button>
@@ -36,7 +36,7 @@ export default function HeaderLogin() {
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-36 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-36 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
       />
       <input
         type="password"
@@ -44,12 +44,12 @@ export default function HeaderLogin() {
         placeholder="Contraseña"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="w-32 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-32 rounded-md bg-slate-800 border border-slate-700 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
       />
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-blue-600 hover:bg-blue-500 disabled:opacity-50 px-3 py-1.5 text-sm font-medium transition"
+        className="rounded-md bg-brand-navy hover:bg-brand-blue disabled:opacity-50 px-3 py-1.5 text-sm font-medium transition"
       >
         {loading ? '…' : 'Entrar'}
       </button>

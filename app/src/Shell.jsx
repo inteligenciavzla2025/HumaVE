@@ -35,7 +35,8 @@ export default function Shell({ session }) {
               ← Menú
             </button>
           )}
-          <h1 className="font-semibold">HumaVE</h1>
+          <img src="/logo.png" alt="HumanVe" className="h-7 w-7 rounded" />
+          <h1 className="font-semibold">HumanVe</h1>
         </div>
         <div className="flex items-center gap-3 text-xs text-slate-400">
           <span title={pendientes > 0 ? `${pendientes} pendiente(s) de sincronizar` : 'Todo sincronizado'}>

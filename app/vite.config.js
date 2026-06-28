@@ -10,12 +10,12 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
+      includeAssets: ['favicon-32x32.png'],
       manifest: {
-        name: 'HumaVE',
-        short_name: 'HumaVE',
+        name: 'HumanVe',
+        short_name: 'HumanVe',
         description: 'Sistema Nacional de Respuesta Humanitaria — Venezuela',
-        theme_color: '#0f172a',
+        theme_color: '#14507A',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: '/',

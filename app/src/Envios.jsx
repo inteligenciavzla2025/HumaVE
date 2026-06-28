@@ -158,7 +158,7 @@ export default function Envios({ usuario }) {
             </div>
           ))}
 
-          <button type="button" onClick={agregarLinea} className="text-sm text-blue-400 hover:text-blue-300">
+          <button type="button" onClick={agregarLinea} className="text-sm text-brand-gold hover:text-brand-yellow">
             + agregar item
           </button>
 
@@ -167,7 +167,7 @@ export default function Envios({ usuario }) {
           <button
             type="submit"
             disabled={enviando}
-            className="w-full rounded-md bg-blue-600 hover:bg-blue-500 disabled:opacity-50 py-2 text-sm font-medium"
+            className="w-full rounded-md bg-brand-navy hover:bg-brand-blue disabled:opacity-50 py-2 text-sm font-medium"
           >
             {enviando ? 'Generando acta…' : 'Generar acta de envío'}
           </button>
